@@ -1,3 +1,4 @@
+import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 import express, { Request, Response, NextFunction } from "express";
@@ -36,6 +37,14 @@ const apiCache = new SimpleCache();
 
 // Middleware: JSON Body Parser
 app.use(express.json());
+app.use(cors({
+  origin: [
+    "https://graphone-discovery.vercel.app",
+    "http://localhost:5173"
+  ],
+  methods: ["GET", "POST"],
+  credentials: true
+}));
 
 // Middleware: Simple Rate Limiting (100 req/min)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
