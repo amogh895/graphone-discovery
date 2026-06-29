@@ -1,0 +1,6 @@
+{
+  "name": "GraphOne Discovery",
+  "description": "An interactive AI Startup Discovery Platform connecting companies, founders, investors, products, and funding rounds.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

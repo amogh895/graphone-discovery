@@ -1,0 +1,107 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Company {
+  id                    String         @id @default(uuid())
+  name                  String
+  slug                  String         @unique
+  description           String
+  category              String
+  funding_total         Float          @default(0)
+  employee_count        Int            @default(0)
+  founded_year          Int
+  hq_city               String
+  hq_country            String
+  logo_url              String
+  website               String
+  stage                 String         // e.g. "Seed", "Series A", "Series B", "Growth"
+  is_unicorn            Boolean        @default(false)
+  valuation             Float          @default(0) // in millions
+  growth_score          Float          @default(0) // scale 0-100
+  last_scraped_at       DateTime       @default(now())
+  data_confidence_score Float          @default(0) // scale 0-100
+  
+  founders              Founder[]
+  products              Product[]
+  funding_rounds        FundingRound[]
+  news_articles         NewsArticle[]  @relation("CompanyNews")
+}
+
+model Investor {
+  id              String         @id @default(uuid())
+  name            String
+  slug            String         @unique
+  type            String         // e.g. "VC", "Angel", "Corporate"
+  bio             String
+  aum             Float          @default(0) // Assets under management in millions
+  portfolio_count Int            @default(0)
+  stage_focus     String[]       // Array of stages
+  sector_focus    String[]       // Array of categories
+  location        String
+  logo_url        String
+  avg_check_size  Float          @default(0) // in millions
+  fund_number     Int            @default(1)
+  
+  lead_rounds     FundingRound[] @relation("LeadInvestor")
+}
+
+model FundingRound {
+  id               String    @id @default(uuid())
+  company_id       String
+  round_type       String    // e.g. "Seed", "Series A", "Series B"
+  amount           Float     @default(0) // in millions
+  currency         String    @default("USD")
+  date             DateTime
+  lead_investor_id String?
+  co_investors     String[]  // Array of investor names or slugs
+
+  company          Company   @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  lead_investor    Investor? @relation("LeadInvestor", fields: [lead_investor_id], references: [id])
+}
+
+model Founder {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  title       String   // e.g. "CEO & Co-founder"
+  company_id  String
+  bio         String
+  twitter     String?
+  linkedin    String?
+  location    String
+  photo_url   String
+
+  company     Company  @relation(fields: [company_id], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  company_id  String
+  name        String
+  description String
+  category    String   // e.g. "Chat", "Code", "Image", "Video"
+  launch_date DateTime
+  upvotes     Int      @default(0)
+  website_url String
+
+  company     Company  @relation(fields: [company_id], references: [id], onDelete: Cascade)
+}
+
+model NewsArticle {
+  id                  String    @id @default(uuid())
+  title               String
+  url                 String
+  published_at        DateTime  @default(now())
+  source              String    // e.g. "TechCrunch", "VentureBeat"
+  tag                 String    // e.g. "Funding", "Product Launch", "Acquisition"
+  related_company_ids String[]
+  summary             String
+
+  companies           Company[] @relation("CompanyNews")
+}
