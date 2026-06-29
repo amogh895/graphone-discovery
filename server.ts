@@ -8,7 +8,7 @@ import { z } from "zod";
 import { GoogleGenAI } from "@google/genai";
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 // Simple memory caching engine with TTL
 class SimpleCache {
@@ -562,9 +562,8 @@ app.get("/api/feed", (req: Request, res: Response) => {
   sendResponse(res, items.slice(0, 20));
 });
 
-// ==========================================
+
 // GEMINI INTELLIGENCE ASSISTANT
-// ==========================================
 
 let geminiClient: GoogleGenAI | null = null;
 function getGemini(): GoogleGenAI {
@@ -625,7 +624,7 @@ ${productsList}
 === RECENT VENTURE NEWS ===
 ${newsList}
 
-Your role:
+ role:
 1. Act as an elite Venture Capitalist and Product-Market Fit analyst.
 2. Provide concise, deep, actionable insights with structural markdown headings, bold accents, bullet points, and data-driven estimates.
 3. Reference real startups or investors from our database whenever relevant.
