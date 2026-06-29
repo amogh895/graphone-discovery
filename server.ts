@@ -36,15 +36,19 @@ class SimpleCache {
 const apiCache = new SimpleCache();
 
 // Middleware: JSON Body Parser
-app.use(express.json());
 app.use(cors({
   origin: [
-    "https://graphone-discovery.vercel.app",
-    "http://localhost:5173"
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://graphone-discovery.vercel.app"
   ],
-  methods: ["GET", "POST"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "X-API-Key"],
   credentials: true
 }));
+
+app.options("*", cors());
+app.use(express.json());
 
 // Middleware: Simple Rate Limiting (100 req/min)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
