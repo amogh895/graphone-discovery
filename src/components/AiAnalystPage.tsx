@@ -1,3 +1,4 @@
+import { API_BASE } from "../config";
 import React, { useState, useRef, useEffect } from "react";
 import { 
   Bot, 
@@ -202,7 +203,7 @@ export default function AiAnalystPage({ onCompanyClick }: AiAnalystPageProps) {
     }));
 
     try {
-      const response = await fetch("/api/ai/chat", {
+      const response = await fetch(`${API_BASE}/api/ai/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

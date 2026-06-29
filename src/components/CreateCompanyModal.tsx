@@ -1,3 +1,4 @@
+import { API_BASE } from "../config";
 import React, { useState } from "react";
 import { X, Check, AlertCircle, Building2 } from "lucide-react";
 
@@ -51,7 +52,7 @@ export default function CreateCompanyModal({ isOpen, onClose, onCompanyCreated }
     };
 
     try {
-      const response = await fetch("/api/companies", {
+      const response = await fetch(`${API_BASE}/api/companies`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

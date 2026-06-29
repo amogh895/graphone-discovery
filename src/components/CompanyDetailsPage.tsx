@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_BASE } from "../config";
 import { 
   ArrowLeft, 
   Globe, 
@@ -43,13 +44,13 @@ export default function CompanyDetailsPage({ companySlug, onBack, onCompanyClick
     async function fetchCompanyDetails() {
       setLoading(true);
       try {
-        const response = await fetch(`/api/companies/${companySlug}`);
+        const response = await fetch(`${API_BASE}/api/companies/${companySlug}`)
         const json = await response.json();
         if (json && json.data) {
           setData(json.data);
           
           // Also fetch similar companies of same category
-          const similarResponse = await fetch(`/api/companies?category=${encodeURIComponent(json.data.category)}`);
+          const similarResponse = await fetch(`${API_BASE}/api/companies?category=${encodeURIComponent(json.data.category)}`)
           const similarJson = await similarResponse.json();
           if (similarJson && similarJson.data) {
             // filter out current company

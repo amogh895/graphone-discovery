@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_BASE } from "../config";
 import { Network, Building2, Coins, Sparkles, AlertCircle } from "lucide-react";
 
 interface Node {
@@ -27,7 +28,7 @@ export default function EcosystemGraph({ companySlug }: EcosystemGraphProps) {
     async function fetchGraph() {
       setLoading(true);
       try {
-        const res = await fetch(`/api/companies/${companySlug}/graph`);
+        const res = await fetch(`${API_BASE}/api/companies/${companySlug}/graph`)
         const json = await res.json();
         if (json && json.data) {
           setData(json.data);

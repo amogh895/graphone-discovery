@@ -1,3 +1,4 @@
+import { API_BASE } from "../config";
 import React, { useState, useEffect } from "react";
 import { 
   Flame, 
@@ -54,17 +55,17 @@ export default function DashboardPage({ onCompanyClick, onNavigate }: DashboardP
       setLoading(true);
       try {
         // Stats
-        const statsRes = await fetch("/api/stats");
+        const statsRes = await fetch(`${API_BASE}/api/stats`);
         const statsJson = await statsRes.json();
         if (statsJson && statsJson.data) setStats(statsJson.data);
 
         // Trending
-        const trendingRes = await fetch("/api/companies/trending");
+        const trendingRes = await fetch(`${API_BASE}/api/companies/trending`)
         const trendingJson = await trendingRes.json();
         if (trendingJson && trendingJson.data) setTrendingCompanies(trendingJson.data);
 
         // All companies
-        const companiesRes = await fetch("/api/companies");
+        const companiesRes = await fetch(`${API_BASE}/api/companies`)
         const companiesJson = await companiesRes.json();
         if (companiesJson && companiesJson.data) {
           setCompanies(companiesJson.data);
